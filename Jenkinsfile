@@ -42,6 +42,11 @@ node('master') {
         )
         echo "This is a deploy step to ${userInput}"
 //        sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
+        sh "export CONFIG_SERVICE_PASSWORD=password\n" +
+                "export NOTIFICATION_SERVICE_PASSWORD=password\n" +
+                "export STATISTICS_SERVICE_PASSWORD=password\n" +
+                "export ACCOUNT_SERVICE_PASSWORD=password\n" +
+                "export MONGODB_PASSWORD=password"
         if (userInput == "Dev") {
             // deploy dev stuff
             sh "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down"
