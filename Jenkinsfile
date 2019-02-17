@@ -29,17 +29,18 @@ node('master') {
 //    }
     stage('Deploy') {
         echo "5. Deploy Stage"
-        def userInput = input(
-                id: 'userInput',
-                message: 'Choose a deploy environment',
-                parameters: [
-                        [
-                                $class : 'ChoiceParameterDefinition',
-                                choices: "Dev\nQA\nProd",
-                                name   : 'Env'
-                        ]
-                ]
-        )
+//        def userInput = input(
+//                id: 'userInput',
+//                message: 'Choose a deploy environment',
+//                parameters: [
+//                        [
+//                                $class : 'ChoiceParameterDefinition',
+//                                choices: "Dev\nQA\nProd",
+//                                name   : 'Env'
+//                        ]
+//                ]
+//        )
+        def userInput = "Dev"
         echo "This is a deploy step to ${userInput}"
 //        sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
         sh "export CONFIG_SERVICE_PASSWORD=password\n" +
