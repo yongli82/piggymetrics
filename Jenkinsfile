@@ -20,13 +20,13 @@ node('master') {
         sh "docker-compose -f docker-compose.yml -f docker-compose.dev.yml build"
     }
 
-    stage('Push') {
-        echo "4. Push Docker Image Stage"
-        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword}"
-            sh "docker push yangyongli/piggymetrics/jenkins-demo:${build_tag}"
-        }
-    }
+//    stage('Push') {
+//        echo "4. Push Docker Image Stage"
+//        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+//            sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword}"
+//            sh "docker push yangyongli/piggymetrics/jenkins-demo:${build_tag}"
+//        }
+//    }
     stage('Deploy') {
         echo "5. Deploy Stage"
         def userInput = input(
@@ -41,14 +41,18 @@ node('master') {
                 ]
         )
         echo "This is a deploy step to ${userInput}"
-        sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
+//        sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
         if (userInput == "Dev") {
             // deploy dev stuff
+            sh "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down"
+            sh "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d"
         } else if (userInput == "QA") {
             // deploy qa stuff
         } else {
             // deploy prod stuff
+            sh "docker-compose -f docker-compose.yml down"
+            sh "docker-compose -f docker-compose.yml up -d"
         }
-        sh "kubectl apply -f k8s.yaml"
+//        sh "kubectl apply -f k8s.yaml"
     }
 }

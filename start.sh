@@ -7,6 +7,6 @@ export ACCOUNT_SERVICE_PASSWORD=password
 export MONGODB_PASSWORD=password
 
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
-#docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
-docker-compose -f docker-compose.yml push
+# docker-compose -f docker-compose.yml push
